@@ -1,0 +1,241 @@
+<style>
+#canvas canvas {
+    display: block;
+}
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.14.2/matter.min.js"></script>
+
+<script>
+  var canvas = document.getElementById("canvas");
+  var cr = canvas.getBoundingClientRect();
+//   console.log("cr:", cr)
+
+  var Engine = Matter.Engine,
+    Render = Matter.Render,
+    Events = Matter.Events,
+    MouseConstraint = Matter.MouseConstraint,
+    Mouse = Matter.Mouse,
+    World = Matter.World,
+    Bodies = Matter.Bodies;
+
+  // create an engine
+  var engine = Engine.create(),
+    world = engine.world;
+
+
+
+  // create a renderer
+  var render = Render.create({
+    element: canvas,
+    engine: engine,
+    options: {
+      width: cr.width,
+      height: cr.height,
+      pixelRatio: 2,
+      background: "#0c0c0c",
+      wireframes: false,
+    },
+  });
+
+
+
+  var ground = Bodies.rectangle(
+    cr.width / 2 + 160,
+    cr.height + 80,
+    cr.width + 320,
+    160,
+    { render: { fillStyle: "#ff00ff" }, isStatic: true }
+  );
+
+  var wallLeft = Bodies.rectangle(
+    -80,
+    window.innerHeight / 2,
+    160,
+    window.innerHeight,
+    { isStatic: true }
+  );
+  var wallRight = Bodies.rectangle(
+    cr.width + 80,
+    window.innerHeight / 2,
+    160,
+    1200,
+    { isStatic: true }
+  );
+  var roof = Bodies.rectangle(
+    cr.width / 2 + 160,
+    -200,
+    cr.width + 320,
+    160,
+    { isStatic: true }
+  );
+
+  // object colors & variables
+//   var arts = "#EDDC8C";
+//   var videos = "#B3E8F3";
+//   var abouts = "#4D4D4D";
+
+  var border = 2;
+  var radius = 24;
+
+  // create objects
+
+
+
+  var comunidad = Bodies.rectangle(cr.width / 3.3 + 230, -180, 164, 48, {
+    chamfer: { radius: radius },
+    render: {
+      sprite: {
+        texture: "https://uploads-ssl.webflow.com/62455c11c0e6cfa2d44856a7/624eb11137122dfaa3cc0eec_comunidad.png",
+        xScale: 0.5,
+        yScale: 0.5,
+      },
+    },
+  });
+
+  var innovacion = Bodies.rectangle(cr.width / 3.3 + 330, -180, 155, 48, {
+    chamfer: { radius: radius },
+    render: {
+      sprite: {
+        texture: "https://uploads-ssl.webflow.com/62455c11c0e6cfa2d44856a7/624ebb1a9582869e27688ed5_innovacion-pill.png",
+        xScale: 0.5,
+        yScale: 0.5,
+      },
+    },
+  });
+
+  var aprendizaje = Bodies.rectangle(cr.width / 3.3 + 180, -180, 166, 48, {
+    chamfer: { radius: radius },
+    render: {
+      sprite: {
+        texture: "https://uploads-ssl.webflow.com/62455c11c0e6cfa2d44856a7/624ebb1a770d706838e7aaae_aprendizaje-pill.png",
+        xScale: 0.5,
+        yScale: 0.5,
+      },
+    },
+  });  
+
+  var fundacion = Bodies.rectangle(cr.width / 3.3 + 390, -180, 151, 48, {
+    chamfer: { radius: radius },
+    render: {
+      sprite: {
+        texture: "https://uploads-ssl.webflow.com/62455c11c0e6cfa2d44856a7/624ebb1bf64f4d48d16b973d_fundacion-pill.png",
+        xScale: 0.5,
+        yScale: 0.5,
+      },
+    },
+  });  
+
+  var smile = Bodies.rectangle(cr.width / 3.3 + 200, -180, 51, 41, {
+    chamfer: { radius: radius },
+    render: {
+      sprite: {
+        texture: "https://uploads-ssl.webflow.com/62455c11c0e6cfa2d44856a7/624ebb1af215a516963147ee_smile-pill.png",
+        xScale: 0.5,
+        yScale: 0.5,
+      },
+    },
+  }); 
+  
+  var star = Bodies.rectangle(cr.width / 3.3 +310, -180, 56, 41, {
+    chamfer: { radius: radius },
+    render: {
+      sprite: {
+        texture: "https://uploads-ssl.webflow.com/62455c11c0e6cfa2d44856a7/624ebb1abfef71e9feaf27fc_star-pill.png",
+        xScale: 0.5,
+        yScale: 0.5,
+      },
+    },
+  });   
+
+  var dot = Bodies.rectangle(cr.width / 3.3 +200, -180, 54, 41, {
+    chamfer: { radius: radius },
+    render: {
+      sprite: {
+        texture: "https://uploads-ssl.webflow.com/62455c11c0e6cfa2d44856a7/624ebb1a17266bd29bf1b7a6_dot-pill.png",
+        xScale: 0.5,
+        yScale: 0.5,
+      },
+    },
+  });     
+
+  // add all of the bodies to the world
+  World.add(engine.world, [
+    ground,
+    wallLeft,
+    wallRight,
+    roof,
+    comunidad,
+    innovacion,
+    aprendizaje,
+    fundacion,
+    smile,
+    star,
+    dot
+  ]);
+
+  // add mouse control
+  var mouse = Mouse.create(render.canvas),
+    mouseConstraint = MouseConstraint.create(engine, {
+      mouse: mouse,
+      constraint: {
+        stiffness: 0.2,
+        render: {
+          visible: false,
+        },
+      },
+    });
+
+  World.add(world, mouseConstraint);
+
+  // keep the mouse in sync with rendering
+  render.mouse = mouse;
+
+  // Allow page scrolling in matter.js window
+  mouse.element.removeEventListener("mousewheel", mouse.mousewheel);
+  mouse.element.removeEventListener("DOMMouseScroll", mouse.mousewheel);
+
+  // Detect clicks vs. drags
+  let click = false;
+
+  document.addEventListener("mousedown", () => (click = true));
+  document.addEventListener("mousemove", () => (click = false));
+  document.addEventListener("mouseup", () =>
+    console.log(click ? "click" : "drag")
+  );
+
+  // Create a On-Mouseup Event-Handler
+  Events.on(mouseConstraint, "mouseup", function (event) {
+    var mouseConstraint = event.source;
+    var bodies = engine.world.bodies;
+    if (!mouseConstraint.bodyB) {
+      for (i = 0; i < bodies.length; i++) {
+        var body = bodies[i];
+        // Check if clicked or dragged
+        if (click === true) {
+          if (
+            Matter.Bounds.contains(body.bounds, mouseConstraint.mouse.position)
+          ) {
+            var bodyUrl = body.url;
+            console.log("Body.Url >> " + bodyUrl);
+            // Hyperlinking feature
+            if (bodyUrl != undefined) {
+              //window.location.href = bodyUrl;
+              window.open(bodyUrl, "_blank");
+              console.log("Hyperlink was opened");
+            }
+            break;
+          }
+        }
+      }
+    }
+  });
+
+  // run the engine
+  Engine.run(engine);
+
+  // run the renderer
+  Render.run(render);
+
+
+</script>
