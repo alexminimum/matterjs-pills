@@ -30,7 +30,6 @@
 
 <!- main.js ->
 <script>
-
 var velocity = { x: 0, y: 0 };
 
 const updateValues = ({ position }) => {
@@ -81,6 +80,18 @@ function init() {
   });
 
   World.add(engine.world, [
+    Bodies.rectangle(width / 3, -100, 1, 1, {
+      isStatic: true,
+      render: {
+        fillStyle: "green",
+      },
+    }),
+    Bodies.rectangle((width / 3) * 2, -100, 1, 1, {
+      isStatic: true,
+      render: {
+        fillStyle: "green",
+      },
+    }),
     //floor
     Bodies.rectangle(width / 2, height + 50, width + 300, 100, {
       isStatic: true,
@@ -96,14 +107,14 @@ function init() {
       },
     }),
     //left
-    Bodies.rectangle(-150, height / 2, 100, height, {
+    Bodies.rectangle(-150, height / 2, 100, height + 400, {
       isStatic: true,
       render: {
         fillStyle: "orange",
       },
     }),
     //right
-    Bodies.rectangle(width + 150, height / 2, 100, height, {
+    Bodies.rectangle(width + 150, height / 2, 100, height + 400, {
       isStatic: true,
       render: {
         fillStyle: "pruple",
@@ -111,8 +122,58 @@ function init() {
     }),
   ]);
 
+  for (let i = 0; i <= 1; i++) {
+    World.add(
+      engine.world,
+      Bodies.rectangle(Math.random() * width, -200, 51, 41, {
+        chamfer: { radius: 24 },
+        render: {
+          sprite: {
+            texture:
+              "https://uploads-ssl.webflow.com/62455c11c0e6cfa2d44856a7/624ebb1af215a516963147ee_smile-pill.png",
+            xScale: 0.5,
+            yScale: 0.5,
+          },
+        },
+      })
+    );
+  }
 
-  for (let i = 0; i <= 5; i++) {
+  for (let i = 0; i <= 2; i++) {
+    World.add(
+      engine.world,
+      Bodies.rectangle(Math.random() * width, -150, 56, 41, {
+        chamfer: { radius: 24 },
+        render: {
+          sprite: {
+            texture:
+              "https://uploads-ssl.webflow.com/62455c11c0e6cfa2d44856a7/624ebb1abfef71e9feaf27fc_star-pill.png",
+            xScale: 0.5,
+            yScale: 0.5,
+          },
+        },
+      })
+    );
+  }
+
+  for (let i = 0; i <= 1; i++) {
+    World.add(
+      engine.world,
+      Bodies.rectangle(Math.random() * width, -100, 54, 41, {
+        chamfer: { radius: 24 },
+        render: {
+          sprite: {
+            texture:
+              "https://uploads-ssl.webflow.com/62455c11c0e6cfa2d44856a7/624ebb1a17266bd29bf1b7a6_dot-pill.png",
+            xScale: 0.5,
+            yScale: 0.5,
+          },
+        },
+      })
+    );
+  }
+
+  for (let i = 0; i <= 3; i++) {
     World.add(
       engine.world,
       Bodies.rectangle(Math.random() * width, -200, 166, 48, {
@@ -129,7 +190,7 @@ function init() {
     );
   }
 
-  for (let i = 0; i <= 3; i++) {
+  for (let i = 0; i <= 2; i++) {
     World.add(
       engine.world,
       Bodies.rectangle(Math.random() * width, -200, 151, 48, {
@@ -146,7 +207,7 @@ function init() {
     );
   }
 
-  for (let i = 0; i <= 5; i++) {
+  for (let i = 0; i <= 3; i++) {
     World.add(
       engine.world,
       Bodies.rectangle(Math.random() * width, -200, 155, 48, {
@@ -163,7 +224,8 @@ function init() {
     );
   }
 
-  for (let i = 0; i <= 4; i++) {
+  for (let i = 0; i <= 3; i++) {
+
     World.add(
       engine.world,
       Bodies.rectangle(Math.random() * width, -200, 164, 48, {
@@ -254,4 +316,5 @@ init();
 $(window).resize(function () {
   init();
 });
+
 </script>
